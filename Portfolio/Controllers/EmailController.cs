@@ -30,7 +30,11 @@ namespace Portfolio.Controllers
                 "Nguyen Duc Bao Son"      
             );            
             await _emailSender.SendEmailAsync(request.Email, request.Message, htmlMessage);
-            return Ok();
+            return Ok(new
+            {
+                status = "success",
+                message = "Thank you for your message. I Sent an email to you please check your email and I will get back to you soon."
+            });
         }
     }
 }
