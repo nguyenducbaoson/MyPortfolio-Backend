@@ -26,14 +26,34 @@ namespace Portfolio.Controllers
             string htmlMessage = string.Format(
                 _portfolioTemplate ?? "Default email template content.",
                 request.Name ?? "there",
-                request.Message ?? "",   
-                "Nguyen Duc Bao Son"      
-            );            
+                request.Message ?? "",
+                "Nguyen Duc Bao Son"
+            );
             await _emailSender.SendEmailAsync(request.Email, request.Message, htmlMessage);
             return Ok(new
             {
                 status = "success",
                 message = "Thank you for your message. I Sent an email to you please check your email and I will get back to you soon."
+            });
+        }
+
+        [HttpPost("send-mail")]
+        public async Task<IActionResult> Sendmail(SendEmail request)
+        {
+            if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Message))
+                return Redirect("https://your-frontend-site.com/email-confirmation?status=invalid");
+
+            string htmlMessage = string.Format(
+                _portfolioTemplate ?? "Default email template content.",
+                request.Name ?? "there",
+                request.Message ?? "",
+                "Nguyen Duc Bao Son"
+            );
+            await _emailSender.SendEmailAsync(request.Email, request.Message, htmlMessage);
+            return Ok(new
+            {
+                status = "success",
+                 message = "Thank you for your message. I Sent an email to you please check your email and I will get back to you soon."
             });
         }
     }
